@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require( 'mongoose' ); 
 var log = require("../logger/logger");
 
 
@@ -11,7 +11,7 @@ module.exports = {
 			if(!db)
 			{
 				console.log(url+" : " + options);
-				mongoose.connect(url,options);
+				mongoose.connect(url);
 				db = mongoose.connection;
 				db.on("error", function(error){
 					console.log("disconnect from mongo");
@@ -34,13 +34,17 @@ module.exports = {
 						}else{
 							console.log("reconnecting to mongo");
 							lastReconnectAttempt = now;
-							mongoose.conenct(url,options,{server:{auto_reconnect:true}});
+							mongoose.connect(url,options,{server:{auto_reconnect:true}});
 						}
 					});
 				
 				db.on("open", function(){
-					var schoolSchema = require("../model/school");
+					
+                    //=========Define all schema here ===================
+                    var schoolSchema = require("../model/school");
 					School  = mongoose.model("School", schoolSchema);
+                    
+                   //=========Define all schema here =================== 
 					if(cb){
 						return cb();
 					}

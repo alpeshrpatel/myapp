@@ -1,3 +1,8 @@
+
+//eagelnest2016/eagelnest2016!
+//
+//git : eagelnest2016@gmail.com/eagelnest2016!
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -71,7 +76,7 @@ mongoURL ="mongodb://" + mongoAuth+hostString+"/"+config.application.mongo.db;
 //mongoURL ="mongodb://" +hostString+"/"+config.application.mongo.db;
 console.log(mongoURL);
 
-mongoose.Promise = global.promise;
+//mongoose.Promise = global.promise;
 //=================Mongo DB ==================================
 
 // error handler
@@ -91,8 +96,51 @@ app.use(function(err, req, res, next) {
 db.connect(mongoURL, config.application.mongo.options,function(){
     app.listen(config.application.apiUrl.port, function () {
         console.log("Application is listening on port " + config.application.apiUrl.port)
-        console.log("Application is listening on port " + config.application.mongo.port)
+        console.log("Mongo is listening on port 27017")
     });
+});
+
+//app.listen(config.application.apiUrl.port, function () {
+//        console.log("Application is listening on port " + config.application.apiUrl.port)
+//});
+//
+//// Build the connection string 
+//var dbURI = 'mongodb://localhost:27017/test'; 
+//
+//// Create the database connection 
+//mongoose.connect(dbURI); 
+//
+//// CONNECTION EVENTS
+//// When successfully connected
+//mongoose.connection.on('connected', function () {  
+//  console.log('Mongoose default connection open to ' + dbURI);
+//}); 
+//
+//// If the connection throws an error
+//mongoose.connection.on('error',function (err) {  
+//  console.log('Mongoose default connection error: ' + err);
+//}); 
+//
+//// When the connection is disconnected
+//mongoose.connection.on('disconnected', function () {  
+//  console.log('Mongoose default connection disconnected'); 
+//});
+//
+//// If the Node process ends, close the Mongoose connection 
+//process.on('SIGINT', function() {  
+//  mongoose.connection.close(function () { 
+//    console.log('Mongoose default connection disconnected through app termination'); 
+//    process.exit(0); 
+//  }); 
+//}); 
+//
+//require('./api/model/school');
+
+
+process.on("SIGINT",function(){
+   db.closeConnection(function(){
+       process.exit(0);
+   }); 
 });
 //=================Start Server==================================
 
