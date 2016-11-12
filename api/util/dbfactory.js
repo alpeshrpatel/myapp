@@ -10,7 +10,7 @@ module.exports = {
 		{
 			if(!db)
 			{
-				
+				console.log(url+" : " + options);
 				mongoose.connect(url,options);
 				db = mongoose.connection;
 				db.on("error", function(error){
