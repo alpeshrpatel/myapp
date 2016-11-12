@@ -18,7 +18,7 @@ module.exports.createSchool = function(req,res)
         }else{
             res.status(200);
             res.json({
-                message:'New School created successfully';
+                message:'New School created successfully'
             }).end();
             console.log("Successfully saved in school");
         }

@@ -7,14 +7,12 @@ var bodyParser = require('body-parser');
 
 var mongoose = require("mongoose");
 
-var config = require("config");
+var config = require('./config/default');
 
 var db = require('./api/util/dbfactory');
 var log = require('./api/logger/logger');
 
-var school_router = require('./api/router/school');
 
-app.use(school_router);
 //-----------------------------
 
 var index = require('./routes/index');
@@ -46,7 +44,35 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+//=================Mongo DB ==================================
+var school_router = require('./api/router/school');
 
+app.use(school_router);
+
+
+var mongoAuth = '',
+    mongoURL ='',
+    dbconfig = config.application.mongo,
+    hostString=''
+
+if(dbconfig.auth.user && dbconfig.auth.password){
+    mongoAuth = dbconfig.auth.user +":"+ dbconfig.auth.password+"@";
+}
+
+for(var index=0; index < dbconfig.instances.length;index++)
+    {
+        if (index > 0){
+            hostString+=",";
+        }
+        hostString += dbconfig.instances[index].host+":"+dbconfig.instances[index].port;
+    }
+mongoURL ="mongodb://" + mongoAuth+hostString+"/"+config.application.mongo.db;
+
+//mongoURL ="mongodb://" +hostString+"/"+config.application.mongo.db;
+console.log(mongoURL);
+
+mongoose.Promise = global.promise;
+//=================Mongo DB ==================================
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -60,8 +86,14 @@ app.use(function(err, req, res, next) {
 	res.render('error');
 });
 
-app.listen(3001, function () {
-  console.log('Example app listening on port 3001!')
-})
+//=================Start Server==================================
+
+db.connect(mongoURL, config.application.mongo.options,function(){
+    app.listen(config.application.apiUrl.port, function () {
+        console.log("Application is listening on port " + config.application.apiUrl.port)
+        console.log("Application is listening on port " + config.application.mongo.port)
+    });
+});
+//=================Start Server==================================
 
 module.exports = app;

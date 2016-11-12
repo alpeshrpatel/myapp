@@ -10,8 +10,9 @@ module.exports = {
 		{
 			if(!db)
 			{
+				
 				mongoose.connect(url,options);
-				db. mongoose.connection;
+				db = mongoose.connection;
 				db.on("error", function(error){
 					console.log("disconnect from mongo");
 					mongoose.disconnect();

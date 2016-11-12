@@ -2,11 +2,11 @@
 module.exports = {
 	"application" : {
 		apiUrl:{
-			host:"localhost"
+			host:"localhost",
 			port:"8081"
 		},
 		mongo:{
-			"db" : "myapp"
+			"db" : "myapp",
 				auth:{
 					user:'',
 					password:''
@@ -21,4 +21,5 @@ module.exports = {
 					}
 				}
 		}
-}
+    }
+};
